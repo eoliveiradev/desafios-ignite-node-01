@@ -34,8 +34,8 @@ export class UsersRepository implements IUsersRepository {
   }: IFindUserByFullNameDTO): Promise<User[] | undefined> {
     return this.repository.
       createQueryBuilder("users")
-      .where("users.first_name = :first_name", { first_name })
-      .andWhere("users.last_name = :last_name", { last_name })
+      .where("users.first_name ILIKE :first_name", { first_name })
+      .andWhere("users.last_name ILIKE :last_name", { last_name })
       .getMany();
   }
 }
