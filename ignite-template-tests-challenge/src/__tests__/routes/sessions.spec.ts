@@ -1,6 +1,5 @@
-import request from 'supertest'
 import { TestDB } from "../utils/database"
-import { app } from '../../app'
+import { testUser } from '../utils/user'
 
 const db = new TestDB()
 
@@ -9,21 +8,8 @@ describe('/sessions', () => {
   afterEach(db.end)
 
   it('[POST] - should create a new session', async () => {
-    const user = {
-      name: 'John Doe',
-      email: 'email@email.com',
-      password: 'password'
-    }
-    await request(app)
-      .post('/api/v1/users')
-      .send(user)
-
-    const session = await request(app)
-      .post('/api/v1/sessions')
-      .send({
-        email: user.email,
-        password: user.password
-      }).expect(200)
+    await testUser.create()
+    const session = await testUser.initSession()
 
     expect(session.body).toHaveProperty('token')
   })

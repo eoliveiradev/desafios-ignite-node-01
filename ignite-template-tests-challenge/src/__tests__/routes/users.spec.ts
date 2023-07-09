@@ -1,6 +1,5 @@
-import request from 'supertest'
-import { app } from '../../app'
 import { TestDB } from '../utils/database'
+import { testUser } from '../utils/user'
 
 const db = new TestDB()
 
@@ -9,13 +8,6 @@ describe('/users', () => {
   afterEach(db.end)
 
   it('[POST] - should create a new user', async () => {
-    await request(app)
-      .post('/api/v1/users')
-      .send({
-        name: 'John Doe',
-        email: 'email@email.com',
-        password: 'password'
-      })
-      .expect(201)
+    await testUser.create()
   })
 })
