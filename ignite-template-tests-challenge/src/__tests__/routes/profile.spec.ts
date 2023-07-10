@@ -6,8 +6,9 @@ import { app } from '../../app';
 const db = new TestDB()
 
 describe('/profile', () => {
-  beforeEach(db.init, 1000)
-  afterEach(db.end)
+  beforeAll(db.init, 1000)
+  beforeEach(db.clear, 1000)
+  afterAll(db.end, 1000)
 
   it('[GET] - should return the user profile', async () => {
     await testUser.create()

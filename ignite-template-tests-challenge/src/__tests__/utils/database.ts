@@ -5,19 +5,18 @@ export class TestDB {
 
   async init() {
     this.connection = await createConnection()
-
-    if (!this.connection.isConnected) {
-      await this.connection.connect()
-    };
-
     await this.connection.dropDatabase()
     await this.connection.runMigrations()
   }
 
+  async clear() {
+    if (!this.connection?.isConnected) return;
+
+    await this.connection.dropDatabase()
+  }
+
   async end() {
-    if (!this.connection?.isConnected) {
-      await this.connection.connect()
-    };
+    if (!this.connection?.isConnected) return;
 
     await this.connection.dropDatabase()
     await this.connection.close()
