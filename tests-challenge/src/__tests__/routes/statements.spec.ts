@@ -61,4 +61,23 @@ describe('/statements', () => {
 
     expect(withdraw.body).toHaveProperty('id')
   }, 1000)
+
+  it('[GET] /:statement_id - Should get a statement', async () => {
+    const session = await testUser.initSession()
+
+    const deposit = await request(app)
+      .post('/api/v1/statements/deposit')
+      .set('Authorization', `Bearer ${session.body.token}`)
+      .send({
+        amount: 1,
+        description: 'Deposit'
+      })
+
+    const statement = await request(app)
+      .get(`/api/v1/statements/${deposit.body.id}`)
+      .set('Authorization', `Bearer ${session.body.token}`)
+      .expect(200)
+
+    expect(statement.body).toHaveProperty('id')
+  })
 });
